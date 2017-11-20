@@ -6,14 +6,9 @@ from tweetsql.database import Base, db_session, engine
 from tweetsql.model import Hashtag, Tweet, User, Word
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
+from secrets import *
 
-CONSUMER_KEY = 'secret'
-CONSUMER_SECRET = 'secret'
-
-OAUTH_TOKEN = 'secret'
-OAUTH_TOKEN_SECRET = 'secret'
-
-TRACK = 'water'
+TRACK = 'teaching'
 
 twitter_auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,
                            CONSUMER_KEY, CONSUMER_SECRET)
