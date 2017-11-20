@@ -1,22 +1,12 @@
 tweetsql
 ========
 
-Python module for storing Twitter data (from the streaming API) in a Postgres database, and operating on it via SQLAlchemy
+This was [forked](https://github.com/karlward/tweetsql) from Karl Ward - 11/20/17. Thanks @karlward! You should assume code and writing is his and not mine, unless it seems stupid, in which case that was probably me. 
 
+Python module for storing Twitter data (from the streaming API) in a Postgres database, and operating on it via SQLAlchemy. Key differences between my work and @karlward:
 
-This was forked from Karl Ward - 11/20/17. Thanks @karlward!
+- I an not using a local postgres database, but instead on in the cloud. As a result, I changed the installation/configuration slightly below to match what occurs in this directory. Do check out @karlward's work [here](https://github.com/karlward/tweetsql) if you want to see how to do this on a local postgres database.
 
-License and thanks
-==================
-Copyright 2014 Karl Ward
-
-This example code and explanatory text is licensed under the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-See the file LICENSE for details.
-
-This code was created within Gilad Lotan's Social Data Analysis course at NYU ITP during Fall 2014.  Respect and gratitude is due to Gilad.  
-
-Jeff Ong helped refine and test these instructions. 
 
 Overview
 ========
@@ -36,12 +26,15 @@ The PostgreSQL database is used in this example because of its superior handling
 Installation/configuration
 ==========================
 
-Install PostgreSQL database server
+Install PostgreSQL database server on AWS
 ----------------------------------
 
-Go to [http://postgresapp.com/](http://postgresapp.com/) and install the app on your machine.
+I followed these easy [instructions](https://aws.amazon.com/getting-started/tutorials/create-connect-postgresql-db/) to set up a postgreSQL. Once your instance is up and running, you'll need to note your DB endpoint. You can find it easily in the AWS console:
 
-Start it up.  You can configure Postgres to start automatically, or you can start it whenever you need it.
+![Alt text](sshot.png "Optional Title")
+
+You will need to copy and paste this url (ending with amazonaws.com) to your postgres connection in the database.py file.
+
 
 Optional pro step: create a Python virtualenv
 ---------------------------------------------
@@ -64,16 +57,7 @@ In Terminal:
     pip install psycopg2 SQLAlchemy networkx twitter
 
 Note: it's necessary to temporarily add the Postgres directory to your PATH environment variable, just so psycopg2 gets built properly by pip.  You can add it to your PATH permanently if you like, but you don't need to. 
-
-Create a database
------------------
-
-Once you have Postgres running, you should see an elephant in the Finder bar at the top of the screen.  Click on the elephant and choose "Open psql".   You'll see a new Terminal window, but this one isn't running Unix.  Instead it is psql, the Postgres SQL command interface.  You need to run the following commands: 
-
-    CREATE USER tweetsql WITH PASSWORD 'tweetsql';
-    CREATE DATABASE tweetsql OWNER tweetsql;
-
-That's it for psql, unless you want to muck around with the SQL directly.  
+ 
 
 Get the tweetsql code
 ---------------------
@@ -82,7 +66,7 @@ If you don't have it already, get the tweetsql code from Git:
 
     mkdir -p ~/Code
     cd ~/Code
-    git clone https://github.com/karlward/tweetsql.git
+    git clone https://github.com/wnowak10/tweetsql.git
 
 Setup your database schema
 --------------------------
@@ -103,19 +87,13 @@ That should have setup your database schema, which means you have an empty datab
 Add your Twitter keys and search string(s)
 ------------------------------------------
 
-You have to modify one file to use this code.  That file is: 
-
-    ~/Code/tweetsql/load-stream.py
-
-You need to set the following variables to the appropriate values:
+You have to add one file to use this code. Create a file called `secrets.py` and save you Twitter API information where appropriate below.
 
     CONSUMER_KEY = 'secret'
     CONSUMER_SECRET = 'secret'
     OAUTH_TOKEN = 'secret'
     OAUTH_TOKEN_SECRET = 'secret'
-    TRACK = 'water'
 
-TRACK is a comma separated list of strings.  The track string is documented in the Twitter streaming API, [https://dev.twitter.com/streaming/overview/request-parameters#track](https://dev.twitter.com/streaming/overview/request-parameters#track)
 
 Run the load-stream.py script
 -----------------------------
@@ -186,3 +164,16 @@ Learn more about SQL
 
 [http://www.postgresql.org/docs/9.3/static/index.html](http://www.postgresql.org/docs/9.3/static/index.html)
 
+
+
+License and thanks
+==================
+Copyright 2014 Karl Ward
+
+This example code and explanatory text is licensed under the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+See the file LICENSE for details.
+
+This code was created within Gilad Lotan's Social Data Analysis course at NYU ITP during Fall 2014.  Respect and gratitude is due to Gilad.  
+
+Jeff Ong helped refine and test these instructions. 
