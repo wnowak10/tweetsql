@@ -3,6 +3,9 @@ tweetsql
 
 Python module for storing Twitter data (from the streaming API) in a Postgres database, and operating on it via SQLAlchemy
 
+
+This was forked from Karl Ward - 11/20/17. Thanks @karlward!
+
 License and thanks
 ==================
 Copyright 2014 Karl Ward
