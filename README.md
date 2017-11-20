@@ -35,30 +35,7 @@ I followed these easy [instructions](https://aws.amazon.com/getting-started/tuto
 
 ![Alt text](sshot.png "Optional Title")
 
-You will need to copy and paste this url (ending with amazonaws.com) to your postgres connection in the database.py file.
-
-
-Optional pro step: create a Python virtualenv
----------------------------------------------
-
-If you have virtualenv, then in Terminal, create a new virtual environment for this program: 
-
-    mkdir -p ~/venv
-    cd ~/venv
-    virtualenv tweetsql
-    source ~/venv/tweetsql/bin/activate
-
-Note: if you set up a virtualenv, remember to use it throughout this example. 
-
-Install dependencies with pip
------------------------------
-
-In Terminal: 
-
-    export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin
-    pip install psycopg2 SQLAlchemy networkx twitter
-
-Note: it's necessary to temporarily add the Postgres directory to your PATH environment variable, just so psycopg2 gets built properly by pip.  You can add it to your PATH permanently if you like, but you don't need to. 
+*You will need to copy and paste this url (ending with amazonaws.com) to your postgres connection in the database.py file.*
  
 
 Get the tweetsql code
@@ -107,65 +84,18 @@ This script accesses the streaming API, downloading every tweet that matches the
 
 It's nice that you can leave this script running for a while (assuming you don't hit your rate limit), and you can restart it whenever you want.  The data will just keep going into the database, where you can manipulate it and query it in different ways later.  
 
-Run the write-gexf.py script
-----------------------------
+
+Use Python Pandas to access database. 
+-----------------------------
+
+Ensure that psycopg2 is installed.
+
+Launch a jupyter notebook. 
 
     cd ~/Code/tweetsql
-    python write-gexf.py
+    jupyter notebook
 
-This script creates a GEXF file for a bipartite graph, with tweets as one type of node, and hashtags an another type of node.  Tweets are linked to hashtags they contain.  Though this is a bit of a contrived example, it shows the power that you get when you access the data through SQLAlchemy.  For example, if you want to iterate through all the tweets, that's relatively simple: 
-
-    for t in db_session.query(Tweet).all():
-
-Or just the most recent 500 tweets: 
-
-    from sqlalchemy import desc
-    for t in db_session.query(Tweet).order_by(desc(created_at))[0:500]:
-
-If you want to access the words in a particular tweet:
-
-    t.words
-
-If you want to see the user who posted a particular tweet:
-
-    t.user
-
-
-Also, notice that the load-stream script stores the entire JSON for each tweet nin the tweet object's data field: 
-
-    data = json.loads(t.data)
-
-Or iterate through all the users you have seen, instead of all the tweets:
-
-    for u in db_session.query(User).all():
-
-And access the tweets you have captured for each user: 
-
-    u.tweets
-
-Poke around in the tweetsql model to learn how to roll your own
----------------------------------------------------------------
-
-    cd ~/Code/tweetsql/tweetsql
-    open model.py
-
-Consider the following improvements: 
-- better word splitting (handling punctuation, hashtags, @, .@, etc.)
-- better parsing of the tweet using stop words, NLTK, etc.
-- adding classes to the model for entities or other Twitter object types
-- adapting this technique for Instagram or other APIs
-- using this technique in your Twitter searches (rather than just the streaming API)
-
-Learn more about SQLAlchemy
----------------------------
-
-[http://docs.sqlalchemy.org/en/rel_0_9/](http://docs.sqlalchemy.org/en/rel_0_9/)
-
-Learn more about SQL
---------------------
-
-[http://www.postgresql.org/docs/9.3/static/index.html](http://www.postgresql.org/docs/9.3/static/index.html)
-
+So long as you again appropriately edit the psycopg2 connection host (as you did previously in the database.py file), you should be able to read the database into a pandas dataframe. From here, we'll be off to the races. 
 
 
 License and thanks
